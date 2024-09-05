@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Virtual</title>
+</head>
+<body>
+    <h1>Agenda Virtual - Cadastro de Pessoas</h1>
+
+    <!-- Formulário para criar uma nova pessoa -->
+    <form id="createForm">
+        <input type="text" id="name" placeholder="Nome" required>
+        <input type="text" id="email" placeholder="Email" required>
+        <button type="submit">Cadastrar Pessoa</button>
+    </form>
+
+    <!-- Botão para listar pessoas -->
+    <button id="listButton">Listar Pessoas</button>
+
+    <!-- Div para exibir as pessoas listadas -->
+    <div id="pessoasList"></div>
+
+    <script>
+        // Função para listar todas as pessoas
+        document.getElementById('listButton').addEventListener('click', async () => {
+            const response = await fetch('http://localhost:8080/pessoas');
+            const pessoas = await response.json();
+            let output = '<h2>Pessoas Cadastradas:</h2>';
+            pessoas.forEach(pessoa => {
+                output += `<p>ID: ${pessoa.id}, Nome: ${pessoa.nome}, Email: ${pessoa.email}</p>`;
+            });
+            document.getElementById('pessoasList').innerHTML = output;
+        });
+
+        // Função para criar uma nova pessoa
+        document.getElementById('createForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const response = await fetch('http://localhost:8080/pessoas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome: name, email: email })
+            });
+            if (response.ok) {
+                alert('Pessoa cadastrada com sucesso!');
+            } else {
+                alert('Erro ao cadastrar pessoa.');
+            }
+        });
+    </script>
+</body>
+</html>
