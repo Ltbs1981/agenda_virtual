@@ -11,6 +11,6 @@ public class testeBoasVindas {
     @GetMapping
 
 public String boasVindas(){
-    return "Projeto da agenda virtual em andamento";
+    return "Projeto agenda virtual em andamento, \n começando a nserir os primeiros registros pelo thunder clint";
 }    
 }
